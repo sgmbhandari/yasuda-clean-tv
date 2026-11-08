@@ -7,6 +7,7 @@ class ResetPinTest {
     @Test fun validatesVerifierAndRejectsWrongPin() {
         val salt = "00112233445566778899aabbccddeeff"
         val digest = ResetPin.derive("123456".toCharArray(), salt)
+        assertEquals("99b17387ba3d03187c4246371f9763757d6d27c0587d564fcbe5a5e326a94ac5", digest)
         assertTrue(ResetPin.matches("123456".toCharArray(), salt, digest))
         assertFalse(ResetPin.matches("123457".toCharArray(), salt, digest))
         assertFalse(ResetPin.matches("12345".toCharArray(), salt, digest))

@@ -11,7 +11,7 @@ class DeviceTests : InstrumentationTestCase() {
             val startup = android.content.Intent(android.content.Intent.ACTION_MAIN).addCategory(category)
             val resolved = manager.resolveActivity(startup, android.content.pm.PackageManager.MATCH_DEFAULT_ONLY)
             assertEquals(category, "local.cleanhome.tv", resolved?.activityInfo?.packageName)
-            assertEquals("local.cleanhome.tv.StartupHome", resolved?.activityInfo?.name)
+            assertEquals(if (category.endsWith("TIF_TV_HOME")) "local.cleanhome.tv.BootHome" else "local.cleanhome.tv.StartupHome", resolved?.activityInfo?.name)
         }
         for ((name, expected) in listOf("config_shortPressOnPowerBehavior" to 3, "config_shortPressOnSleepBehavior" to 1)) {
             val id = context.resources.getIdentifier(name, "integer", "android")

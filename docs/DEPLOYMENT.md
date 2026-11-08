@@ -73,7 +73,7 @@ default PIN. Omit `--smarttube-key` to preserve the existing key. If using that
 option, first install and verify SmartTube stable from its official project.
 Clean Home does not bundle third-party apps, credentials or paid services.
 
-`--power-home` enables the startup alias, disables only the dedicated TIF
+`--power-home` enables the direct startup and power/source aliases, disables only the dedicated TIF
 startup forwarder and adds `/vendor/overlay/CleanHomePower.apk`. The native TV
 player/input/audio/casting/factory/debug services stay enabled.
 `--smarttube-key` changes only the two reviewed YouTube aliases in
@@ -88,7 +88,7 @@ adb -s TV_IP:5555 shell am start -a android.intent.action.MAIN -c android.intent
 ```
 
 If Android asks, choose Clean Home → Always with the remote. Test real standby/
-wake. The Source menu and power policy use the same TV_HOME action. The router
+wake. Firmware TIF startup goes straight to Home through BootHome. The Source menu and power policy use the same TV_HOME action. The router
 distinguishes known source-menu callers and source extras, forwarding those to
 the real TV player in a separate task. Other firmware source-menu packages
 need their route inspected before startup configuration.

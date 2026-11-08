@@ -12,7 +12,7 @@ class DeploymentTests(unittest.TestCase):
         return {"home": "stock.launcher/.Home", "serialno": "test-serial", "android_id": "test-id", "overlay_mode": "default",
                 "power_home": True, "smarttube_key": True, "overlay_sha": "a" * 64,
                 "hotkey_original": "b" * 64, "hotkey_patched": "c" * 64,
-                "components": {deploy.ALIAS: 0, deploy.FORWARDER: 1}}
+                "components": {deploy.ALIAS: 0, deploy.BOOT_ALIAS: 0, deploy.FORWARDER: 1}}
     def test_restore_is_guarded_and_restores_recorded_states(self):
         script = deploy.recovery_script(self.data())
         self.assertIn('[ "$(getprop ro.serialno)" = test-serial ]', script)

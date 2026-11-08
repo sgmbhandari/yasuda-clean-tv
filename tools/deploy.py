@@ -18,6 +18,7 @@ ROOT = Path(__file__).resolve().parent.parent
 PACKAGE = "local.cleanhome.tv"
 HOME = PACKAGE + "/.HomeActivity"
 ALIAS = PACKAGE + "/.StartupHome"
+BOOT_ALIAS = PACKAGE + "/.BootHome"
 FORWARDER = "com.cvte.tiflauncher/.MainActivity"
 HOTKEY = "/vendor/menu_config_xml/hotkey.xml"
 OVERLAY = "/vendor/overlay/CleanHomePower.apk"
@@ -121,7 +122,8 @@ def recovery_script(data):
         checks.append(f'if [ -e {OVERLAY} ]; then check {OVERLAY} {data["overlay_sha"]}; fi')
         commands += [f'if [ -e {OVERLAY} ]; then mv {OVERLAY} "$BASE/CleanHomePower-retired.apk"; fi',
                      f'pm {ops[data["components"][FORWARDER]]} --user 0 {FORWARDER}',
-                     f'pm {ops[data["components"][ALIAS]]} --user 0 {ALIAS}']
+                     f'pm {ops[data["components"][ALIAS]]} --user 0 {ALIAS}',
+                     f'pm {ops[data["components"][BOOT_ALIAS]]} --user 0 {BOOT_ALIAS}']
     if data.get("smarttube_key"):
         checks += [f'check "$BASE/hotkey.xml" {data["hotkey_original"]}',
                    f'actual="$(sha256sum {HOTKEY})"; actual="${{actual%% *}}"; [ "$actual" = {data["hotkey_original"]} ] || [ "$actual" = {data["hotkey_patched"]} ]']
@@ -179,7 +181,7 @@ def configure(device, folder, args):
                 serialno=device.shell("getprop", "ro.serialno"), android_id=device.shell("settings", "get", "secure", "android_id"))
     restrictions = device.shell("cat", "/data/system/users/0/package-restrictions.xml")
     (folder / "package-restrictions.xml").write_text(restrictions); (folder / "package-restrictions.xml").chmod(0o600)
-    data["components"] = {c: component_state(restrictions, c) for c in [ALIAS, FORWARDER]}
+    data["components"] = {c: component_state(restrictions, c) for c in [ALIAS, BOOT_ALIAS, FORWARDER]}
     mode = re.search(r"SYSTEM_ALERT_WINDOW:\s*(\w+)", device.shell("appops", "get", PACKAGE, "SYSTEM_ALERT_WINDOW"))
     data["overlay_mode"] = mode.group(1) if mode else "default"
     if data["overlay_mode"] not in ["default", "allow", "ignore", "deny", "foreground"]: raise RuntimeError("Unrecognized original overlay permission")
@@ -223,8 +225,8 @@ def configure(device, folder, args):
                     if device.shell("sha256sum", HOTKEY).split()[0] != data["hotkey_patched"]: raise RuntimeError("Hotkey write did not verify")
             finally: device.shell("mount", "-o", "remount,ro", "/vendor")
         if args.power_home:
-            step("startup-routing"); device.shell("pm", "enable", "--user", "0", ALIAS); device.shell("pm", "disable", "--user", "0", FORWARDER)
-            if ALIAS not in device.shell("cmd", "package", "resolve-activity", "--brief", "-a", "android.intent.action.MAIN", "-c", "android.intent.category.TIF_TV_HOME"):
+            step("startup-routing"); device.shell("pm", "enable", "--user", "0", ALIAS); device.shell("pm", "enable", "--user", "0", BOOT_ALIAS); device.shell("pm", "disable", "--user", "0", FORWARDER)
+            if BOOT_ALIAS not in device.shell("cmd", "package", "resolve-activity", "--brief", "-a", "android.intent.action.MAIN", "-c", "android.intent.category.TIF_TV_HOME"):
                 raise RuntimeError("Firmware startup does not uniquely resolve to Clean Home")
         data["phase"] = "configured"; save(folder / "snapshot.json", data)
         device.shell("am", "start", "-n", HOME)
