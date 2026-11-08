@@ -1,0 +1,4 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <overlay android:targetPackage="android" android:isStatic="true" android:priority="1" />
+    <application android:label="Clean Home power behavior" android:icon="@android:drawable/ic_menu_view" android:hasCode="false" android:allowBackup="false" />
+</manifest>

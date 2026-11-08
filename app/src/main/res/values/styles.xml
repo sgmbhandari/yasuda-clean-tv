@@ -1,0 +1,32 @@
+<resources>
+    <style name="CleanHomeTheme" parent="android:style/Theme.Material.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:colorAccent">#FFFFFF</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowBackground">#090D17</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@style/CleanHomeAnimation</item>
+    </style>
+    <style name="CleanHomeAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/home_enter</item>
+        <item name="android:activityOpenExitAnimation">@anim/home_exit</item>
+        <item name="android:activityCloseEnterAnimation">@anim/home_enter</item>
+        <item name="android:activityCloseExitAnimation">@anim/home_exit</item>
+    </style>
+    <style name="CleanPanelAnimation">
+        <item name="android:windowEnterAnimation">@anim/panel_enter</item>
+        <item name="android:windowExitAnimation">@anim/panel_exit</item>
+    </style>
+    <style name="CleanGlassDialogTheme" parent="android:style/Theme.Material.Dialog.Alert">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundFloating">@android:color/transparent</item>
+        <item name="android:colorAccent">#F5F6FA</item>
+        <item name="android:textColorPrimary">#F5F6FA</item>
+        <item name="android:textColorSecondary">#D2D6DF</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimAmount">0.28</item>
+    </style>
+</resources>

@@ -1,0 +1,4 @@
+<resources>
+    <string name="paused_caption">Paused · %1$s</string>
+    <string name="empty_caption">Your space, at ease</string>
+</resources>

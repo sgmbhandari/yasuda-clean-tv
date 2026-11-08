@@ -1,0 +1,5 @@
+<resources>
+    <!-- Android's built-in sleep-and-Home paths; no resident service or polling. -->
+    <integer name="config_shortPressOnPowerBehavior">3</integer>
+    <integer name="config_shortPressOnSleepBehavior">1</integer>
+</resources>
